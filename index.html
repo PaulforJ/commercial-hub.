@@ -407,14 +407,62 @@
     const SUPABASE_URL = 'https://swbstuvjqgizcmltadwc.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3YnN0dXZqcWdpemNtbHRhZHdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkyOTg4NTgsImV4cCI6MjEwNDg3NDg1OH0.b2A1LeKlz0MPCdp6Q-xZSZqgUNLKsPcozUnxkKvT6hc';
 
+    /* ==========================================================================
+       TELEGRAM NOTIFICATIONS
+       ==========================================================================
+       Sends a message to a shared Telegram group the moment someone submits
+       the lead form, so both Paul and Emmanuel get notified instantly.
+
+       Setup:
+       1. In Telegram, message @BotFather and send /newbot. Follow the prompts
+          and copy the bot token it gives you.
+       2. Create a Telegram group and add both Paul and Emmanuel to it.
+       3. Add the bot to that same group as a member.
+       4. Send any message in the group, then visit this URL in a browser,
+          replacing <TOKEN> with the bot token:
+          https://api.telegram.org/bot<TOKEN>/getUpdates
+          Find "chat":{"id": ...} in the response. Group IDs are negative
+          numbers, such as -1001234567890. That is the chat ID.
+       5. Paste the token and chat ID into the two lines below.
+       ========================================================================== */
+
+    const TELEGRAM_BOT_TOKEN = '8994914373:AAHQzeHeqUj_e3WMm8TczBeRueWFrHt737M';
+    const TELEGRAM_CHAT_ID = '-1004483799760';
+
     (function () {
       const isConfigured = SUPABASE_URL.indexOf('http') === 0 && SUPABASE_ANON_KEY.length > 20;
+      const isTelegramConfigured = TELEGRAM_BOT_TOKEN.indexOf('PASTE_') !== 0 && TELEGRAM_CHAT_ID.indexOf('PASTE_') !== 0;
       let client = null;
 
       if (isConfigured && window.supabase) {
         client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       } else {
         console.warn('Supabase is not configured yet: paste SUPABASE_URL and SUPABASE_ANON_KEY at the top of the script to activate lead capture and visit tracking.');
+      }
+
+      if (!isTelegramConfigured) {
+        console.warn('Telegram is not configured yet: paste TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID at the top of the script to activate instant lead notifications.');
+      }
+
+      function notifyTelegram(lead) {
+        if (!isTelegramConfigured) return;
+
+        const message =
+          'New lead, Premium Commercial Hub\n' +
+          'Name: ' + lead.full_name + '\n' +
+          'Phone: ' + lead.phone + '\n' +
+          'Email: ' + (lead.email || 'not provided') + '\n' +
+          'Preferred floor: ' + lead.preferred_floor;
+
+        const url = 'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage';
+
+        fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
+        }).catch(function (err) {
+          console.error('Telegram notification failed:', err.message);
+        });
       }
 
       if (client) {
@@ -456,12 +504,14 @@
         statusEl.textContent = '';
         statusEl.className = 'form-status';
 
-        client.from('leads').insert([{
+        const lead = {
           full_name: fullName,
           phone: phone,
           email: email || null,
           preferred_floor: floor
-        }]).then(function (result) {
+        };
+
+        client.from('leads').insert([lead]).then(function (result) {
           submitBtn.disabled = false;
           submitBtn.textContent = 'Request a callback';
 
@@ -473,6 +523,7 @@
             statusEl.textContent = 'Thank you. Emmanuel will call you back shortly.';
             statusEl.className = 'form-status success';
             form.reset();
+            notifyTelegram(lead);
           }
         });
       });
