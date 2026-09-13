@@ -447,12 +447,7 @@
       function notifyTelegram(lead) {
         if (!isTelegramConfigured) return;
 
-        const message =
-          'New lead, Premium Commercial Hub\n' +
-          'Name: ' + lead.full_name + '\n' +
-          'Phone: ' + lead.phone + '\n' +
-          'Email: ' + (lead.email || 'not provided') + '\n' +
-          'Preferred floor: ' + lead.preferred_floor;
+        const message = 'Someone just booked a call on Premium Commercial Hub. Check the dashboard for details.';
 
         const url = 'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage';
 
