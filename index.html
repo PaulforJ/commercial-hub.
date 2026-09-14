@@ -91,15 +91,23 @@
   /* PRICING */
   .pricing{padding:72px 0;}
   .pricing h2{font-size:28px; margin-bottom:10px;}
-  .pricing > .wrap > p{color:var(--muted); margin-bottom:36px; font-size:15px;}
-  .price-table{width:100%; border-top:2px solid var(--navy);}
-  .price-row{
-    display:flex; justify-content:space-between; align-items:baseline;
-    padding:16px 4px; border-bottom:1px solid var(--stone-line);
+  .pricing > .wrap > p{color:var(--muted); margin-bottom:40px; font-size:15px; max-width:560px;}
+  .price-highlight{
+    border-top:2px solid var(--navy); padding-top:36px;
+    display:grid; grid-template-columns:1.1fr 1fr 1fr; gap:32px; align-items:start;
   }
-  .price-row .floor{font-size:16px; font-weight:600;}
-  .price-row .amount{font-size:18px; font-weight:800; color:var(--navy);}
-  .price-note{margin-top:16px; font-size:13px; color:var(--muted);}
+  .price-highlight .from-label{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--amber); margin-bottom:8px;}
+  .price-highlight .from-amount{font-size:32px; font-weight:800; color:var(--navy); letter-spacing:-0.01em;}
+  .price-highlight .from-unit{font-size:13px; color:var(--muted); margin-top:4px;}
+  .price-perk{padding-left:18px; border-left:1px solid var(--stone-line);}
+  .price-perk .p-label{font-size:13px; font-weight:700; color:var(--navy); margin-bottom:6px;}
+  .price-perk .p-detail{font-size:14px; color:var(--muted);}
+  .price-note{margin-top:28px; font-size:13px; color:var(--muted); padding-top:20px; border-top:1px solid var(--stone-line);}
+  .price-note a{color:var(--navy); font-weight:700; text-decoration:underline;}
+  @media(max-width:760px){
+    .price-highlight{grid-template-columns:1fr; gap:24px;}
+    .price-perk{padding-left:0; border-left:none; padding-top:16px; border-top:1px solid var(--stone-line);}
+  }
 
   /* CONTACT / LEAD */
   .contact{padding:0 0 80px;}
@@ -107,12 +115,17 @@
     border:1px solid var(--stone-line); background:#fff;
     display:grid; grid-template-columns:1fr 1fr;
   }
-  .contact-info{padding:48px; background:var(--navy); color:#fff;}
+  .contact-info{padding:56px 48px; background:var(--navy); color:#fff;}
   .contact-info h2{font-size:24px; margin-bottom:14px;}
-  .contact-info p{color:#B7BFC9; font-size:14px; margin-bottom:24px;}
-  .contact-info .line{font-size:14px; margin-bottom:8px; color:#DDE2E8;}
-  .contact-info .line strong{color:#fff; display:block; font-size:15px; margin-bottom:2px;}
-  .contact-info .line a{text-decoration:underline;}
+  .contact-info > p{color:#B7BFC9; font-size:14px; max-width:340px;}
+  .agent-card{margin-top:36px; padding-top:32px; border-top:1px solid rgba(255,255,255,.14);}
+  .agent-card .agent-name{font-size:17px; font-weight:700; color:#fff; margin-bottom:3px;}
+  .agent-card .agent-role{font-size:13px; color:#8892A0; margin-bottom:30px;}
+  .agent-card .detail{margin-bottom:22px;}
+  .agent-card .detail:last-child{margin-bottom:0;}
+  .agent-card .detail .label{display:block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--amber); margin-bottom:5px;}
+  .agent-card .detail a, .agent-card .detail .value{font-size:15px; color:#EDEFF2; line-height:1.5;}
+  .agent-card .detail a{text-decoration:underline; text-underline-offset:2px;}
   .contact-form{padding:48px; display:flex; flex-direction:column; gap:12px;}
   .contact-form input, .contact-form select{
     width:100%; padding:12px 14px; border:1px solid var(--stone-line); border-radius:3px;
@@ -295,18 +308,24 @@
 
   <section class="pricing" id="pricing">
     <div class="wrap">
-      <h2>Price per square metre, by floor</h2>
-      <p>Prices range from ₦3,775,000 to ₦4,875,000 per square metre, depending on floor. Contact Emmanuel Adams directly for site inspections, available units, and pricing.</p>
-      <div class="price-table">
-        <div class="price-row"><span class="floor">Ground floor</span><span class="amount">₦4,875,000</span></div>
-        <div class="price-row"><span class="floor">First floor</span><span class="amount">₦4,675,000</span></div>
-        <div class="price-row"><span class="floor">Second floor</span><span class="amount">₦4,475,000</span></div>
-        <div class="price-row"><span class="floor">Third floor</span><span class="amount">₦4,175,000</span></div>
-        <div class="price-row"><span class="floor">Fourth floor</span><span class="amount">₦3,975,000</span></div>
-        <div class="price-row"><span class="floor">Fifth floor</span><span class="amount">₦3,775,000</span></div>
-        <div class="price-row"><span class="floor">Sixth floor</span><span class="amount">₦3,775,000</span></div>
+      <h2>An investment priced by floor, tailored to your budget</h2>
+      <p>Pricing is structured per square metre and varies by floor, giving you room to choose what fits your budget and business needs. Speak with Emmanuel Adams for the exact rate on your preferred floor.</p>
+      <div class="price-highlight">
+        <div>
+          <div class="from-label">Investment starts from</div>
+          <div class="from-amount">₦3,775,000</div>
+          <div class="from-unit">per square metre</div>
+        </div>
+        <div class="price-perk">
+          <div class="p-label">Flexible unit sizes</div>
+          <div class="p-detail">Choose 25, 50, or 100 square metres, depending on your floor and business plan.</div>
+        </div>
+        <div class="price-perk">
+          <div class="p-label">Floor-based pricing</div>
+          <div class="p-detail">Rates are tiered by floor, so there's an entry point for every budget.</div>
+        </div>
       </div>
-      <p class="price-note">Available unit sizes are 25, 50, and 100 square metres.</p>
+      <p class="price-note">Full floor-by-floor pricing is shared during a private presentation — <a href="#contact">request yours below</a>.</p>
     </div>
   </section>
 
@@ -316,10 +335,22 @@
         <div class="contact-info">
           <h2>Book a private presentation and inspection</h2>
           <p>Have a firsthand view of Premium Commercial Hub and reserve your preferred unit.</p>
-          <div class="line"><strong>Emmanuel Adams</strong>Investment Advisor, Build Now Real Estate Abuja</div>
-          <div class="line"><a href="tel:07064496005">07064 496 005</a></div>
-          <div class="line"><a href="mailto:emmanueladams01@gmail.com">emmanueladams01@gmail.com</a></div>
-          <div class="line">A3 First Floor, Millennium Builders Plaza, Herbert Macaulay Way, Opp NNPC Towers, CBD Abuja</div>
+          <div class="agent-card">
+            <div class="agent-name">Emmanuel Adams</div>
+            <div class="agent-role">Investment Advisor, Build Now Real Estate Abuja</div>
+            <div class="detail">
+              <span class="label">Call</span>
+              <a href="tel:07064496005">07064 496 005</a>
+            </div>
+            <div class="detail">
+              <span class="label">Email</span>
+              <a href="mailto:emmanueladams01@gmail.com">emmanueladams01@gmail.com</a>
+            </div>
+            <div class="detail">
+              <span class="label">Visit</span>
+              <span class="value">A3 First Floor, Millennium Builders Plaza, Herbert Macaulay Way, Opp NNPC Towers, CBD Abuja</span>
+            </div>
+          </div>
         </div>
         <form class="contact-form" id="leadForm">
           <input type="text" id="fullName" placeholder="Full name" required>
